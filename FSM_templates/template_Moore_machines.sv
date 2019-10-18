@@ -25,21 +25,21 @@ module module_name
  always_comb
 	case (pr_state)
 		A: begin
-			outp1 < = < value > ;
-			outp2 < = < value > ;
+			outp1 = < value > ;
+			outp2 = < value > ;
 			...
-			if (condition) nx_state < = B;
-			else if (condition) nx_state < = ...;
-			else nx_state < = A;
+			if (condition) nx_state = B;
+			else if (condition) nx_state = ...;
+			else nx_state = A;
 		end
  
 		B: begin
-			outp1 < = < value > ;
-			outp2 < = < value > ;
+			outp1 = < value > ;
+			outp2 = < value > ;
 			...
-			if (condition) nx_state < = C;
-			else if (condition) nx_state < = ...;
-			else nx_state < = B;
+			if (condition) nx_state = C;
+			else if (condition) nx_state = ...;
+			else nx_state = B;
 		end
  
 		C: begin

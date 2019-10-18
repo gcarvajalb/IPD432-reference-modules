@@ -26,48 +26,48 @@ module module_name
 	case (pr_state)
 		A:
 			if (condition) begin
-				outp1 < = < value > ;
-				outp2 < = < value > ;
+				outp1  = < value > ;
+				outp2  = < value > ;
 				...
-				nx_state < = B;
+				nx_state  = B;
 			end
 			else if (condition) begin
-				outp1 < = < value > ;
-				outp2 < = < value > ;
+				outp1  = < value > ;
+				outp2  = < value > ;
 				...
-				nx_state < = ...;
+				nx_state  = ...;
 			end
 			else begin
-				outp1 < = < value > ;
-				outp2 < = < value > ;
+				outp1  = < value > ;
+				outp2  = < value > ;
 				...
-				nx_state < = A;
+				nx_state = A;
 			end
  
 		B:
 			if (condition) begin
-				outp1 < = < value > ;
-				outp2 < = < value > ;
+				outp1 = < value > ;
+				outp2 = < value > ;
 				...
 				nx_state < = C;
 			end
 			else if (condition) begin
-				outp1 < = < value > ;
-				outp2 < = < value > ;
+				outp1 = < value > ;
+				outp2 = < value > ;
 				...
 				nx_state < = ...;
 			end
 			else begin
-				outp1 < = < value > ;
-				outp2 < = < value > ;
+				outp1 = < value > ;
+				outp2 = < value > ;
 				...
-				nx_state < = B;
+				nx_state = B;
 			end
 		C: 	...
 			...
 	endcase
 
- //Optional output register:
+ //Optional registered outputs:
 	always_ff @(posedge clk, posedge rst)
 		if (rst) begin //rst might be not needed here
 			new_outp1 < = ...;
