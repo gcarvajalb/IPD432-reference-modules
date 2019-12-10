@@ -17,7 +17,7 @@ module module_name
  //Statements:--------------------------------
 
  //FSM state register:
- always_ff @(posedge clk, posedge rst)
+ always_ff @(posedge clk)
 	if (rst) pr_state < = A;
 	else pr_state < = nx_state;
 	
