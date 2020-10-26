@@ -1,19 +1,20 @@
 module PB_Debouncer_counter#(
- parameter DELAY=15,
- parameter DELAY_WIDTH = $clog2(DELAY)
- )
+    parameter DELAY=15                     // Number of clock pulses to check stable button pressing
+    )
 (
-	input 	logic clk,
-	input 	logic rst,
-	input 	logic PB,
-	output 	logic PB_pressed_status,
-	output  logic PB_pressed_pulse,
-	output  logic PB_released_pulse
+	input 	logic clk,                  // base clock
+	input 	logic rst,                  // global reset
+	input 	logic PB,                   // raw asynchronous input from mechanical PB         
+	output 	logic PB_pressed_status,    // clean and synchronized pulse for button pressed
+	output  logic PB_pressed_pulse,    // high if button is pressed
+	output  logic PB_released_pulse    // clean and synchronized pulse for button released
  );
+	
 	
 	logic PB_sync_aux, PB_sync;
 
-///// Double flopping stage for synchronization
+// Double flopping stage for synchronizing async. PB input signal
+// PB_sync is the synchronized signal used for other circuits
     always_ff @(posedge clk) begin
         if (rst) begin
             PB_sync_aux <= 1'b0;
@@ -25,7 +26,8 @@ module PB_Debouncer_counter#(
         end
     end
 /////////////////
-
+    localparam DELAY_WIDTH = $clog2(DELAY);   // Determine the size of the clock cycles counter
+    
     logic [DELAY_WIDTH-1:0] PB_cnt;
     logic PB_IDLE;
     logic PB_COUNT_MAX;
@@ -33,7 +35,7 @@ module PB_Debouncer_counter#(
 // The counter has to be maxed out before we decide that the push-button state has changed
 
     assign PB_IDLE      = (PB_pressed_status==PB_sync);
-    assign PB_COUNT_MAX = &PB_cnt;	// true when all bits of PB_cnt are 1's
+    assign PB_COUNT_MAX = &PB_cnt;	// true when all bits of PB_cnt are 1's (counter has maxed out)
 
     always_ff @(posedge clk) begin
         if (rst) begin
@@ -48,7 +50,8 @@ module PB_Debouncer_counter#(
             end
      end
 
-assign PB_pressed_pulse  = ~PB_IDLE & PB_COUNT_MAX & ~PB_pressed_status;
+// logic to generate pressed and released pulses
+assign PB_pressed_pulse  = ~PB_IDLE & PB_COUNT_MAX & ~PB_pressed_status; 
 assign PB_released_pulse = ~PB_IDLE & PB_COUNT_MAX &  PB_pressed_status;
 
 endmodule

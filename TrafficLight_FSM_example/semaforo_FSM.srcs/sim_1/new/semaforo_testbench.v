@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // testbenches requires a module without inputs or outputs
-// It's only a "virtual" modulo. We cannot implement hardware with this!!!
+// It's only a "virtual" module. We cannot implement hardware with this!!!
 module testbench();
   
     // We need to give values at the inputs, so we define them as registers  
@@ -12,17 +12,15 @@ module testbench();
 	//The outputs are wires. We don't connect them to anything, but we need to 
 	// declare them to visualize them in the output timing diagram
 	wire [1:0] LA, LB;
-	wire [1:0] state; 
 	
 	// an instance of the Device Under Test
-	semaforo DUT(
+	semaforo_FSM DUT(
         .clock (clock),
         .reset (reset),
         .TA (TA),
         .TB (TB),
         .LA (LA),
-        .LB (LB),
-        .state_out (state)
+        .LB (LB)
         );
             
 	// generate a clock signal that inverts its value every five time units

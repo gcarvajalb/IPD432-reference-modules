@@ -3,8 +3,8 @@
 // Module header:-----------------------------
 module module_name
 #(parameter
-	param1 = < value > ,
-	param2 = < value > )
+	param1 = <value> ,
+	param2 = <value> )
 (
 	input 	logic clk, rst, ...
 	input 	logic [7:0] inp1, inp2, ...
@@ -13,7 +13,7 @@ module module_name
  //Declarations:------------------------------
 
  //FSM states type:
- typedef enum logic [2:0] {A, B, C, ...} state;
+ typedef enum logic [10:0] {A, B, C, ...} state;
  state pr_state, nx_state;
 
   //Timer-related declarations:
@@ -25,13 +25,13 @@ module module_name
  //Part 3: Statements:---------------------------------------
 
  //Timer :
- always_ff @(posedge clk)
-	if (rst) t <= 0;
+ always_ff @(posedge clk, posedge rst)
+	if (rst) t < = 0;
 	else if (pr_state != nx_state) t <= 0; //reset the timer when state changes
 	else if (t != tmax) t <= t + 1;
 
  //FSM state register:
- always_ff @(posedge clk)
+ always_ff @(posedge clk, posedge rst)
 	if (rst) pr_state <= A;
 	else pr_state <= nx_state;
  
@@ -42,7 +42,7 @@ module module_name
 			outp1 = <value> ;
 			outp2 = <value> ;
 			...
-			if (... and t >= T1-1) nx_state = B;
+			if (... and t > =T1-1) nx_state = B;
 			else if (... and t >= T2-1) nx_state = ...;
 			else nx_state = A;
 		end
@@ -62,8 +62,8 @@ module module_name
 		...
 	endcase
 
- //Optional output register:
-	always_ff @(posedge clk, posedge rst)
+ //Optional output register (if required). Adds a FF at the output to prevent the propagation of glitches from comb. logic.
+	always_ff @(posedge clk)
 		if (rst) begin //rst might be not needed here
 			new_outp1 <= ...;
 			new_outp2 <= ...; ...
